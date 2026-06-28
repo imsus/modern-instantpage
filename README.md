@@ -42,18 +42,18 @@ import 'modern-instantpage'
 
 Configure via data attributes on `<body>`:
 
-| Attribute | Description |
-|-----------|-------------|
-| `data-instant-intensity="mousedown"` | Preload on mousedown (80ms average) |
-| `data-instant-intensity="mousedown-only"` | Mousedown on desktop only |
-| `data-instant-intensity="viewport"` | Preload visible links (mobile) |
-| `data-instant-intensity="viewport-all"` | Preload all visible links |
-| `data-instant-intensity="150"` | Custom hover delay (ms) |
-| `data-instant-allow-query-string` | Allow query string pages |
-| `data-instant-allow-external-links` | Allow external links |
-| `data-instant-whitelist` | Only preload marked links |
-| `data-instant-mousedown-shortcut` | Trigger click on mousedown |
-| `data-no-instant` | Blacklist specific links |
+| Attribute                                 | Description                         |
+| ----------------------------------------- | ----------------------------------- |
+| `data-instant-intensity="mousedown"`      | Preload on mousedown (80ms average) |
+| `data-instant-intensity="mousedown-only"` | Mousedown on desktop only           |
+| `data-instant-intensity="viewport"`       | Preload visible links (mobile)      |
+| `data-instant-intensity="viewport-all"`   | Preload all visible links           |
+| `data-instant-intensity="150"`            | Custom hover delay (ms)             |
+| `data-instant-allow-query-string`         | Allow query string pages            |
+| `data-instant-allow-external-links`       | Allow external links                |
+| `data-instant-whitelist`                  | Only preload marked links           |
+| `data-instant-mousedown-shortcut`         | Trigger click on mousedown          |
+| `data-no-instant`                         | Blacklist specific links            |
 
 ## Browser Support
 
