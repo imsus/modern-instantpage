@@ -1,7 +1,7 @@
 {
-  "name": "instant.page",
+  "name": "@imsus/modern-instantpage",
   "version": "6.0.0",
-  "description": "Make your site's pages instant in 1 minute and improve your conversion rate by 1%",
+  "description": "Make your site's pages instant in 1 minute — modernized fork of instant.page with TypeScript, Speculation Rules API, and PointerEvent",
   "type": "module",
   "main": "dist/instantpage.min.js",
   "module": "dist/instantpage.es.js",
@@ -33,24 +33,35 @@
     "preview": "vite preview",
     "test": "vitest run",
     "test:watch": "vitest",
-    "typecheck": "tsc --noEmit"
+    "typecheck": "tsc --noEmit",
+    "prepublishOnly": "pnpm build && pnpm test"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/instantpage/instant.page.git"
+    "url": "git+https://github.com/imsus/modern-instantpage.git"
   },
   "keywords": [
     "instant",
     "performance",
     "prefetch",
-    "speculation-rules"
+    "speculation-rules",
+    "prerender",
+    "page-load",
+    "speed",
+    "core-web-vitals"
   ],
-  "author": "Alexandre Dieulot",
+  "author": "Alexandre Dieulot, imsus",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/instantpage/instant.page/issues"
+    "url": "https://github.com/imsus/modern-instantpage/issues"
   },
-  "homepage": "https://instant.page/",
+  "homepage": "https://github.com/imsus/modern-instantpage#readme",
+  "engines": {
+    "node": ">=18"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
   "devDependencies": {
     "jsdom": "^29.1.1",
     "terser": "^5.48.0",
