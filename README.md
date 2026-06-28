@@ -1,13 +1,21 @@
-# instant.page
+# @imsus/modern-instantpage
 
 **Make your site's pages instant in 1 minute and improve your conversion rate by 1%.**
 
-:information_source: Info is on [the website](https://instant.page).
+A modernized fork of [instant.page](https://instant.page/) by Alexandre Dieulot, with TypeScript, Speculation Rules API, and PointerEvent support.
+
+## Features
+
+- **Speculation Rules API** — uses modern browser APIs when available, with automatic fallback
+- **PointerEvent** — replaces fragile touch/mouse heuristics with native device detection
+- **Scheduler API** — uses `scheduler.postTask()` for priority-aware scheduling
+- **TypeScript** — full type safety with exported types
+- **Tiny** — ~2KB gzipped, zero dependencies
 
 ## Install
 
 ```bash
-npm install instant.page
+npm install @imsus/modern-instantpage
 ```
 
 ## Usage
@@ -15,52 +23,61 @@ npm install instant.page
 ### Script tag
 
 ```html
-<script src="dist/instantpage.min.js"></script>
+<script src="dist/instantpage.min.js" type="module"></script>
 ```
 
 ### ES Module
 
 ```javascript
-import 'instant.page'
+import 'modern-instantpage'
 ```
 
-## Development
+### Debug build
 
-### Prerequisites
-
-- Node.js 18+
-- npm
-
-### Setup
-
-```bash
-npm install
+```html
+<script src="dist/instantpage-debug.min.js" type="module"></script>
 ```
 
-### Commands
+## Configuration
 
-```bash
-# Build the library
-npm run build
+Configure via data attributes on `<body>`:
 
-# Run tests
-npm test
-
-# Run tests in watch mode
-npm run test:watch
-
-# Type check
-npm run typecheck
-
-# Start dev server
-npm run dev
-```
+| Attribute | Description |
+|-----------|-------------|
+| `data-instant-intensity="mousedown"` | Preload on mousedown (80ms average) |
+| `data-instant-intensity="mousedown-only"` | Mousedown on desktop only |
+| `data-instant-intensity="viewport"` | Preload visible links (mobile) |
+| `data-instant-intensity="viewport-all"` | Preload all visible links |
+| `data-instant-intensity="150"` | Custom hover delay (ms) |
+| `data-instant-allow-query-string` | Allow query string pages |
+| `data-instant-allow-external-links` | Allow external links |
+| `data-instant-whitelist` | Only preload marked links |
+| `data-instant-mousedown-shortcut` | Trigger click on mousedown |
+| `data-no-instant` | Blacklist specific links |
 
 ## Browser Support
 
-- Chromium ≥ 100
-- Firefox ≥ 115
-- Safari ≥ 15.4
+- Chrome 100+
+- Firefox 115+
+- Safari 15.4+
+
+Progressive enhancement — no impact on unsupported browsers.
+
+## Development
+
+```bash
+pnpm install
+pnpm dev        # Start dev server
+pnpm build      # Build production + debug
+pnpm test       # Run tests
+pnpm typecheck  # Type check
+```
+
+## Credits
+
+Original library by [Alexandre Dieulot](https://github.com/alexandre-dieulot).
+
+Modernized by [imsus](https://github.com/imsus).
 
 ## License
 
