@@ -1,0 +1,606 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>instant.page — Make your site's pages instant</title>
+  <meta name="description" content="Make your site's pages instant in 1 minute and improve your conversion rate by 1%. Just-in-time preloading using Speculation Rules API.">
+  <style>
+    :root {
+      --bg: #0a0a0a;
+      --fg: #fafafa;
+      --muted: #a1a1aa;
+      --accent: #3b82f6;
+      --accent-hover: #60a5fa;
+      --border: #27272a;
+      --card: #18181b;
+      --code-bg: #1e1e2e;
+      --success: #22c55e;
+      --warning: #eab308;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background: var(--bg);
+      color: var(--fg);
+      line-height: 1.6;
+    }
+
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 24px;
+    }
+
+    /* Hero */
+    .hero {
+      padding: 120px 0 80px;
+      text-align: center;
+    }
+
+    .hero h1 {
+      font-size: clamp(2.5rem, 5vw, 4rem);
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      margin-bottom: 24px;
+    }
+
+    .hero h1 span {
+      background: linear-gradient(135deg, var(--accent), #a855f7);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .hero p {
+      font-size: 1.25rem;
+      color: var(--muted);
+      max-width: 640px;
+      margin: 0 auto 40px;
+    }
+
+    .hero-stats {
+      display: flex;
+      justify-content: center;
+      gap: 48px;
+      margin-bottom: 48px;
+    }
+
+    .hero-stat {
+      text-align: center;
+    }
+
+    .hero-stat-value {
+      font-size: 2.5rem;
+      font-weight: 700;
+      color: var(--accent);
+    }
+
+    .hero-stat-label {
+      font-size: 0.875rem;
+      color: var(--muted);
+    }
+
+    /* Code snippet */
+    .snippet {
+      background: var(--code-bg);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 24px;
+      max-width: 700px;
+      margin: 0 auto;
+      text-align: left;
+    }
+
+    .snippet-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 16px;
+    }
+
+    .snippet-label {
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--muted);
+    }
+
+    .snippet-copy {
+      background: var(--accent);
+      color: white;
+      border: none;
+      padding: 6px 16px;
+      border-radius: 6px;
+      font-size: 0.875rem;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+
+    .snippet-copy:hover {
+      background: var(--accent-hover);
+    }
+
+    .snippet code {
+      font-family: 'SF Mono', Monaco, 'Cascadia Code', monospace;
+      font-size: 0.875rem;
+      color: #e2e8f0;
+    }
+
+    .snippet .comment { color: #6b7280; }
+    .snippet .tag { color: #f472b6; }
+    .snippet .attr { color: #a78bfa; }
+    .snippet .string { color: #34d399; }
+
+    /* Features */
+    .features {
+      padding: 80px 0;
+    }
+
+    .features-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 24px;
+    }
+
+    .feature-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 32px;
+    }
+
+    .feature-icon {
+      font-size: 2rem;
+      margin-bottom: 16px;
+    }
+
+    .feature-card h3 {
+      font-size: 1.25rem;
+      margin-bottom: 8px;
+    }
+
+    .feature-card p {
+      color: var(--muted);
+      font-size: 0.9375rem;
+    }
+
+    /* How it works */
+    .how-it-works {
+      padding: 80px 0;
+      border-top: 1px solid var(--border);
+    }
+
+    .section-title {
+      font-size: 2rem;
+      font-weight: 700;
+      text-align: center;
+      margin-bottom: 48px;
+    }
+
+    .timeline {
+      max-width: 800px;
+      margin: 0 auto;
+    }
+
+    .timeline-item {
+      display: flex;
+      gap: 24px;
+      margin-bottom: 48px;
+    }
+
+    .timeline-marker {
+      flex-shrink: 0;
+      width: 48px;
+      height: 48px;
+      background: var(--accent);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      font-size: 1.25rem;
+    }
+
+    .timeline-content h3 {
+      font-size: 1.25rem;
+      margin-bottom: 8px;
+    }
+
+    .timeline-content p {
+      color: var(--muted);
+    }
+
+    /* Configuration */
+    .config {
+      padding: 80px 0;
+      border-top: 1px solid var(--border);
+    }
+
+    .config-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 32px;
+    }
+
+    .config-table th,
+    .config-table td {
+      padding: 16px;
+      text-align: left;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .config-table th {
+      font-weight: 600;
+      color: var(--muted);
+      font-size: 0.875rem;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    .config-table code {
+      background: var(--code-bg);
+      padding: 4px 8px;
+      border-radius: 4px;
+      font-family: 'SF Mono', Monaco, monospace;
+      font-size: 0.875rem;
+    }
+
+    /* Browser support */
+    .browser-support {
+      padding: 80px 0;
+      border-top: 1px solid var(--border);
+      text-align: center;
+    }
+
+    .browsers {
+      display: flex;
+      justify-content: center;
+      gap: 48px;
+      margin-top: 32px;
+    }
+
+    .browser {
+      text-align: center;
+    }
+
+    .browser-icon {
+      font-size: 3rem;
+      margin-bottom: 8px;
+    }
+
+    .browser-name {
+      font-weight: 600;
+    }
+
+    .browser-version {
+      color: var(--muted);
+      font-size: 0.875rem;
+    }
+
+    /* Comparison */
+    .comparison {
+      padding: 80px 0;
+      border-top: 1px solid var(--border);
+    }
+
+    .comparison-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 32px;
+    }
+
+    .comparison-table th,
+    .comparison-table td {
+      padding: 16px;
+      text-align: left;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .comparison-table th {
+      font-weight: 600;
+    }
+
+    .comparison-table td:first-child {
+      color: var(--muted);
+    }
+
+    .comparison-table .check { color: var(--success); }
+    .comparison-table .cross { color: #ef4444; }
+
+    /* Footer */
+    .footer {
+      padding: 48px 0;
+      border-top: 1px solid var(--border);
+      text-align: center;
+      color: var(--muted);
+      font-size: 0.875rem;
+    }
+
+    .footer a {
+      color: var(--accent);
+      text-decoration: none;
+    }
+
+    .footer a:hover {
+      color: var(--accent-hover);
+    }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+      .hero-stats {
+        flex-direction: column;
+        gap: 24px;
+      }
+
+      .browsers {
+        flex-direction: column;
+        gap: 24px;
+      }
+
+      .comparison-table {
+        font-size: 0.875rem;
+      }
+
+      .comparison-table th,
+      .comparison-table td {
+        padding: 12px 8px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <!-- Hero -->
+    <section class="hero">
+      <h1>Make your site's pages <span>instant</span></h1>
+      <p>Just-in-time preloading using Speculation Rules API. Improve your conversion rate by 1% in 1 minute.</p>
+
+      <div class="hero-stats">
+        <div class="hero-stat">
+          <div class="hero-stat-value">&lt;2KB</div>
+          <div class="hero-stat-label">gzipped</div>
+        </div>
+        <div class="hero-stat">
+          <div class="hero-stat-value">300ms+</div>
+          <div class="hero-stat-label">faster page loads</div>
+        </div>
+        <div class="hero-stat">
+          <div class="hero-stat-value">1%</div>
+          <div class="hero-stat-label">conversion boost</div>
+        </div>
+      </div>
+
+      <div class="snippet">
+        <div class="snippet-header">
+          <span class="snippet-label">Add before &lt;/body&gt;</span>
+          <button class="snippet-copy" onclick="copySnippet()">Copy</button>
+        </div>
+        <code><span class="comment">&lt;!-- instant.page v6.0.0 --&gt;</span>
+<span class="tag">&lt;script</span> <span class="attr">src</span>=<span class="string">"dist/instantpage.min.js"</span> <span class="attr">type</span>=<span class="string">"module"</span><span class="tag">&gt;&lt;/script&gt;</span></code>
+      </div>
+    </section>
+
+    <!-- Features -->
+    <section class="features">
+      <h2 class="section-title">Why instant.page?</h2>
+      <div class="features-grid">
+        <div class="feature-card">
+          <div class="feature-icon">⚡</div>
+          <h3>Speculation Rules API</h3>
+          <p>Uses the modern Speculation Rules API when available, with automatic fallback to link prefetch for older browsers.</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon">🎯</div>
+          <h3>Smart Prefetching</h3>
+          <p>Only preloads when there's a good chance of navigation — on hover, mousedown, touch, or viewport visibility.</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon">📱</div>
+          <h3>Mobile Optimized</h3>
+          <p>Touch-aware prefetching, respects data saver mode, and adapts to network conditions automatically.</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon">🔒</div>
+          <h3>Privacy First</h3>
+          <p>Only preloads HTML documents. No tracking, no cookies, no external requests. Respects user privacy.</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon">🚀</div>
+          <h3>Priority Hints</h3>
+          <p>Uses fetchPriority="high" for user-initiated prefetches to ensure fast loading without blocking other resources.</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon">📦</div>
+          <h3>Tiny Footprint</h3>
+          <p>Under 2KB gzipped. Zero dependencies. Loads after everything else via scheduler.postTask().</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- How it works -->
+    <section class="how-it-works">
+      <h2 class="section-title">How it works</h2>
+      <div class="timeline">
+        <div class="timeline-item">
+          <div class="timeline-marker">1</div>
+          <div class="timeline-content">
+            <h3>User hovers over a link</h3>
+            <p>On desktop, when a user hovers for 65ms, there's a 50% chance they'll click. That's when we start preloading.</p>
+          </div>
+        </div>
+        <div class="timeline-item">
+          <div class="timeline-marker">2</div>
+          <div class="timeline-content">
+            <h3>Page preloads in background</h3>
+            <p>The browser fetches the next page using Speculation Rules or link prefetch, leaving 300ms+ for completion.</p>
+          </div>
+        </div>
+        <div class="timeline-item">
+          <div class="timeline-marker">3</div>
+          <div class="timeline-content">
+            <h3>User clicks — page is ready</h3>
+            <p>The page loads instantly from cache. The user perceives it as immediate (&lt;100ms).</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Configuration -->
+    <section class="config">
+      <h2 class="section-title">Configuration</h2>
+      <p style="text-align: center; color: var(--muted); margin-bottom: 32px;">Configure via data attributes on &lt;body&gt;</p>
+
+      <table class="config-table">
+        <thead>
+          <tr>
+            <th>Attribute</th>
+            <th>Description</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><code>data-instant-intensity="mousedown"</code></td>
+            <td>Preload on mousedown instead of hover (80ms average)</td>
+          </tr>
+          <tr>
+            <td><code>data-instant-intensity="mousedown-only"</code></td>
+            <td>Mousedown preload on desktop only, no mobile preloading</td>
+          </tr>
+          <tr>
+            <td><code>data-instant-intensity="viewport"</code></td>
+            <td>Preload links as soon as they're visible (mobile only)</td>
+          </tr>
+          <tr>
+            <td><code>data-instant-intensity="viewport-all"</code></td>
+            <td>Preload all visible links on any device</td>
+          </tr>
+          <tr>
+            <td><code>data-instant-intensity="150"</code></td>
+            <td>Custom hover delay in milliseconds</td>
+          </tr>
+          <tr>
+            <td><code>data-instant-allow-query-string</code></td>
+            <td>Allow preloading pages with query strings</td>
+          </tr>
+          <tr>
+            <td><code>data-instant-allow-external-links</code></td>
+            <td>Allow preloading external links</td>
+          </tr>
+          <tr>
+            <td><code>data-instant-whitelist</code></td>
+            <td>Only preload links with <code>data-instant</code> attribute</td>
+          </tr>
+          <tr>
+            <td><code>data-instant-mousedown-shortcut</code></td>
+            <td>Trigger click on mousedown for instant navigation</td>
+          </tr>
+          <tr>
+            <td><code>data-no-instant</code></td>
+            <td>Blacklist specific links from preloading</td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+
+    <!-- Browser Support -->
+    <section class="browser-support">
+      <h2 class="section-title">Browser Support</h2>
+      <p style="color: var(--muted);">Progressive enhancement — no impact on unsupported browsers.</p>
+
+      <div class="browsers">
+        <div class="browser">
+          <div class="browser-icon">🌐</div>
+          <div class="browser-name">Chrome</div>
+          <div class="browser-version">100+</div>
+        </div>
+        <div class="browser">
+          <div class="browser-icon">🦊</div>
+          <div class="browser-name">Firefox</div>
+          <div class="browser-version">115+</div>
+        </div>
+        <div class="browser">
+          <div class="browser-icon">🧭</div>
+          <div class="browser-name">Safari</div>
+          <div class="browser-version">15.4+</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Comparison -->
+    <section class="comparison">
+      <h2 class="section-title">vs. Quicklink</h2>
+
+      <table class="comparison-table">
+        <thead>
+          <tr>
+            <th>Feature</th>
+            <th>instant.page</th>
+            <th>Quicklink</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Size (gzip)</td>
+            <td>~2KB</td>
+            <td>&lt;1KB</td>
+          </tr>
+          <tr>
+            <td>Trigger modes</td>
+            <td>hover, mousedown, touch, viewport</td>
+            <td>viewport only</td>
+          </tr>
+          <tr>
+            <td>Speculation Rules API</td>
+            <td class="check">✓</td>
+            <td class="cross">✗</td>
+          </tr>
+          <tr>
+            <td>fetchPriority hints</td>
+            <td class="check">✓</td>
+            <td class="cross">✗</td>
+          </tr>
+          <tr>
+            <td>Scheduler API</td>
+            <td class="check">✓</td>
+            <td class="cross">✗</td>
+          </tr>
+          <tr>
+            <td>TypeScript</td>
+            <td class="check">✓</td>
+            <td class="cross">✗</td>
+          </tr>
+          <tr>
+            <td>SPA support</td>
+            <td class="cross">✗</td>
+            <td class="check">✓ (React)</td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+      <p>
+        Made by <a href="https://github.com/imsus">imsus</a> •
+        <a href="https://github.com/imsus/modern-instantpage">GitHub</a> •
+        <a href="https://www.npmjs.com/package/instant.page">npm</a>
+      </p>
+      <p style="margin-top: 8px;">Original by <a href="https://github.com/alexandre-dieulot">Alexandre Dieulot</a></p>
+    </footer>
+  </div>
+
+  <script>
+    function copySnippet() {
+      const code = '<script src="dist/instantpage.min.js" type="module"><\/script>';
+      navigator.clipboard.writeText(code).then(() => {
+        const btn = document.querySelector('.snippet-copy');
+        btn.textContent = 'Copied!';
+        setTimeout(() => btn.textContent = 'Copy', 2000);
+      });
+    }
+  </script>
+</body>
+</html>

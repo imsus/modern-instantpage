@@ -1,19 +1,67 @@
 # instant.page
 
-**Make your site’s pages instant in 1 minute and improve your conversion rate by 1%.**
+**Make your site's pages instant in 1 minute and improve your conversion rate by 1%.**
 
 :information_source: Info is on [the website](https://instant.page).
 
-:scroll: The source is in [instantpage.js](https://github.com/instantpage/instant.page/blob/master/instantpage.js).
+## Install
 
-## Tests
+```bash
+npm install instant.page
+```
 
-With [Node](https://nodejs.org/), run:
+## Usage
 
-`node test`
+### Script tag
 
-And access http://127.0.0.1:8000/. Or specify another port with an argument after the filename.
+```html
+<script src="dist/instantpage.min.js"></script>
+```
 
-## Minifying
+### ES Module
 
-To minify instantpage.js into instantpage.min.js, run `npm run minify`.
+```javascript
+import 'instant.page'
+```
+
+## Development
+
+### Prerequisites
+
+- Node.js 18+
+- npm
+
+### Setup
+
+```bash
+npm install
+```
+
+### Commands
+
+```bash
+# Build the library
+npm run build
+
+# Run tests
+npm test
+
+# Run tests in watch mode
+npm run test:watch
+
+# Type check
+npm run typecheck
+
+# Start dev server
+npm run dev
+```
+
+## Browser Support
+
+- Chromium ≥ 100
+- Firefox ≥ 115
+- Safari ≥ 15.4
+
+## License
+
+MIT

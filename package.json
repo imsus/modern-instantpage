@@ -1,14 +1,39 @@
 {
   "name": "instant.page",
-  "version": "5.2.0",
-  "description": "Make your site’s pages instant in 1 minute and improve your conversion rate by 1%",
-  "main": "instantpage.js",
-  "directories": {
-    "test": "test"
+  "version": "6.0.0",
+  "description": "Make your site's pages instant in 1 minute and improve your conversion rate by 1%",
+  "type": "module",
+  "main": "dist/instantpage.min.js",
+  "module": "dist/instantpage.es.js",
+  "types": "dist/instantpage.d.ts",
+  "exports": {
+    ".": {
+      "import": {
+        "types": "./dist/instantpage.d.ts",
+        "default": "./dist/instantpage.es.js"
+      },
+      "require": {
+        "types": "./dist/instantpage.d.ts",
+        "default": "./dist/instantpage.min.js"
+      }
+    },
+    "./debug": {
+      "import": "./dist/instantpage-debug.es.js",
+      "require": "./dist/instantpage-debug.min.js"
+    }
   },
+  "files": [
+    "dist"
+  ],
   "scripts": {
-    "minify": "npx --yes -- uglify-es ./instantpage.js --compress --mangle --toplevel --comments \"/^!/\" --output ./instantpage.min.js",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "dev": "vite",
+    "build": "vite build && vite build --config vite.debug.config.ts",
+    "build:prod": "vite build",
+    "build:debug": "vite build --config vite.debug.config.ts",
+    "preview": "vite preview",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "typecheck": "tsc --noEmit"
   },
   "repository": {
     "type": "git",
@@ -16,12 +41,21 @@
   },
   "keywords": [
     "instant",
-    "performance"
+    "performance",
+    "prefetch",
+    "speculation-rules"
   ],
   "author": "Alexandre Dieulot",
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/instantpage/instant.page/issues"
   },
-  "homepage": "https://instant.page/"
+  "homepage": "https://instant.page/",
+  "devDependencies": {
+    "jsdom": "^29.1.1",
+    "terser": "^5.48.0",
+    "typescript": "^6.0.3",
+    "vite": "^8.1.0",
+    "vitest": "^4.1.9"
+  }
 }
